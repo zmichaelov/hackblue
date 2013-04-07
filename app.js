@@ -83,7 +83,7 @@ function init() {
         var object = new THREE.Object3D();
         object.position.x = ( ( i % 5 ) * 400 ) - 800;
         object.position.y = ( -( Math.floor(i / 5) % 5 ) * 400 ) + 800;
-        object.position.z = ( Math.floor(i / 25) ) * 1000 - 2000;
+//        object.position.z = ( Math.floor(i / 25) ) * 1000 - 2000;
         targets.grid.push(object);
     }
 
@@ -96,17 +96,39 @@ function init() {
         element.innerHTML += X.render(template, response)
         return element;
     }
+    function makeCube(friend){
+        var element = document.createElement("div");
+        element.id = friend.id;
+        settings = {
+            fontSize: 50
+        };
+//        var link = document.createElement('a');
+//        link.href = 'http://www.google.com';
+        var link = "<a href=\"http://www.google.com\" target=\"_blank\">Google</a>";
+        var cubeSet = new HexaFlip(element,
+            {
+                fb: [friend.name, friend.id, link]
+            }, settings
+        );
+        element.addEventListener('dblclick', function(){
+            cubeSet.flip();
+        }, false);
+        cubeSet.fontsize = '50px';
+        cubeSet.getValue();
+        return element;
+    }
 
 
     var X = new SexyApp();
 
     // retrieve friends using an FB API call
-    FB.api('/me/friends?limit=100', function (response) {
+    FB.api('/me/friends?limit=10', function (response) {
         var friends_list = response.data;
         var n = friends_list.length;
         for (var i = 0; i < n; i++) {
             var friend = friends_list[i];
-            var element = makeElement(friend, 'fb_template');
+//            var element = makeElement(friend, 'fb_template');
+            var element = makeCube(friend);
             placeRandomly(element);
 
             placeInTable(i);
@@ -116,9 +138,12 @@ function init() {
         }
         console.log("# of friends: " + friends_list.length);
                 transform(targets.table, 2000);
-
     });
-
+    // retrieve news feed data
+//    FB.api('me/home', function(response){
+//        var feed = response.data;
+//        console.log(feed[0].message);
+//    });
 
     renderer = new THREE.CSS3DRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
