@@ -1,3 +1,6 @@
+// used to cache file directory data
+var FileSystem = {};
+
 var client = new Dropbox.Client({
     key: "IimTyINK8SA=|/dH9rrZxDBjFfZTHvks9htkYT+rT8FK3a+xLAysYIQ==", sandbox: false
 });
@@ -26,7 +29,7 @@ dump = function(error){
 }
 
 function showStat(err, stat, stats){
-	
+
 }
 
 function renderContents(contents){
@@ -38,12 +41,27 @@ function renderContents(contents){
 
 function readFile(path, callback){
   client.stat(path,null, function(err,info){
-    callback(info)
+    callback(info);
   })
 }
 
 function readDir(path, callback){
-	client.stat(path,{ readDir: true}, function(err, info, contents){
-		callback(contents)
-	});
+    if(FileSystem[path] === undefined) {
+        FileSystem[path] = {};
+        var currentDir = FileSystem[path];
+        client.stat(path,{ readDir: true}, function(err, info, contents){
+            currentDir.info = info;
+            currentDir.contents = [];
+            contents.forEach(function (file) {
+//                console.log(file);
+                FileSystem[file.path] = file;
+                currentDir.contents.push(FileSystem[file.path]);
+            });
+            callback(FileSystem[path].contents);
+        });
+
+    }else{
+        console.log(FileSystem[path].contents);
+        callback(FileSystem[path].contents);
+    }
 }

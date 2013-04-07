@@ -138,9 +138,9 @@ function init() {
             var object;
 
             if(el.isFolder){
-                element = makeFolder(el, 'debug_template');
-                element.ind = i;
-                readPath(i, element, el);
+//                element = makeFolder(el, 'debug_template');
+//                element.ind = i;
+//                readPath(i, element, el);
             }
             else{
                 element = makeElement(el, 'debug_template');
