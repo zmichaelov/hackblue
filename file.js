@@ -45,23 +45,36 @@ function readFile(path, callback){
   })
 }
 
+function dennisReadDir(path, callback){
+	client.stat(path,{ readDir: true}, function(err, info, contents){
+		callback(contents)
+	});
+}
+
+
 function readDir(path, callback){
     if(FileSystem[path] === undefined) {
         FileSystem[path] = {};
+    }
+    if(FileSystem[path]['contents'] === undefined) {
         var currentDir = FileSystem[path];
         client.stat(path,{ readDir: true}, function(err, info, contents){
             currentDir.info = info;
             currentDir.contents = [];
             contents.forEach(function (file) {
-//                console.log(file);
                 FileSystem[file.path] = file;
                 currentDir.contents.push(FileSystem[file.path]);
             });
-            callback(FileSystem[path].contents);
+            if(callback !== undefined) {
+            	callback(FileSystem[path].contents);
+            }
         });
 
-    }else{
-        console.log(FileSystem[path].contents);
-        callback(FileSystem[path].contents);
+    }
+    else{
+        console.log("Reading cached contents");
+        if(callback !== undefined ) {
+        	callback(FileSystem[path].contents);
+    	}
     }
 }
