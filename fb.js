@@ -4,7 +4,7 @@
  */
 
 function getFriends() {
-    FB.api('/me/friends', function (response) {
+    FB.api('/me/friends?limit=50', function (response) {
         var friends_list = response.data;
         console.log("# of friends: " + friends_list.length);
     });

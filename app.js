@@ -1,216 +1,230 @@
-			var camera, scene, renderer;
-			var controls;
+var camera, scene, renderer;
+var controls;
 
-			var objects = [];
-			var targets = { table: [], sphere: [], helix: [], grid: [] };
+var objects = [];
+var targets = { table: [], sphere: [], helix: [], grid: [] };
 
-			init();
-			animate();
+init();
+animate();
 
-			function init() {
+function init() {
 
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
-				camera.position.z = 1800;
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
+    camera.position.z = 1800;
 
-				scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
 
-					function placeRandomly(element){
-								var object = new THREE.CSS3DObject( element );
-								object.position.x = Math.random() * 4000 - 2000;
-								object.position.y = Math.random() * 4000 - 2000;
-								object.position.z = Math.random() * 4000 - 2000;
-						scene.add( object );
+    function placeRandomly(element) {
+        var object = new THREE.CSS3DObject(element);
+        object.position.x = Math.random() * 4000 - 2000;
+        object.position.y = Math.random() * 4000 - 2000;
+        object.position.z = Math.random() * 4000 - 2000;
+        scene.add(object);
 
-					objects.push( object );
+        objects.push(object);
 
-					}
+    }
 
-				// table
+    // table
 
 
-				function placeInTable(i) {
-					var object = new THREE.Object3D();
-					object.position.x = ( i*160 ) - 1540;
-					object.position.y = - (i*200 ) + 1100;
-					targets.table.push( object );
-				}
+    function placeInTable(i) {
+        var object = new THREE.Object3D();
+        object.position.x = ( i * 160 ) - 1540;
+        object.position.y = -(i * 200 ) + 1100;
+        targets.table.push(object);
+    }
 
-				// sphere
+    // sphere
 
-				var sphereVector = new THREE.Vector3();
+    var sphereVector = new THREE.Vector3();
 
 
-				function placeInSphere(i, l) {
-					var phi = Math.acos( -1 + ( 2 * i ) / l );
-					var theta = Math.sqrt( l * Math.PI ) * phi;
+    function placeInSphere(i, l) {
+        var phi = Math.acos(-1 + ( 2 * i ) / l);
+        var theta = Math.sqrt(l * Math.PI) * phi;
 
-					var object = new THREE.Object3D();
+        var object = new THREE.Object3D();
 
-					object.position.x = 1000 * Math.cos( theta ) * Math.sin( phi );
-					object.position.y = 1000 * Math.sin( theta ) * Math.sin( phi );
-					object.position.z = 1000 * Math.cos( phi );
+        object.position.x = 1000 * Math.cos(theta) * Math.sin(phi);
+        object.position.y = 1000 * Math.sin(theta) * Math.sin(phi);
+        object.position.z = 1000 * Math.cos(phi);
 
-					sphereVector.copy( object.position ).multiplyScalar( 2 );
+        sphereVector.copy(object.position).multiplyScalar(2);
 
-					object.lookAt( sphereVector );
+        object.lookAt(sphereVector);
 
-					targets.sphere.push( object );
-				}
+        targets.sphere.push(object);
+    }
 
-				// helix
+    // helix
 
-				var helixVector = new THREE.Vector3();
+    var helixVector = new THREE.Vector3();
 
-				function placeInHelix(i, l) {
-					var phi = i * 0.175 + Math.PI;
-					var object = new THREE.Object3D();
+    function placeInHelix(i, l) {
+        var phi = i * 0.175 + Math.PI;
+        var object = new THREE.Object3D();
 
-					object.position.x = 1100 * Math.sin( phi );
-					object.position.y = - ( i * 8 ) + 450;
-					object.position.z = 1100 * Math.cos( phi );
+        object.position.x = 1100 * Math.sin(phi);
+        object.position.y = -( i * 8 ) + 450;
+        object.position.z = 1100 * Math.cos(phi);
 
-					helixVector.copy( object.position );
-					helixVector.x *= 2;
-					helixVector.z *= 2;
+        helixVector.copy(object.position);
+        helixVector.x *= 2;
+        helixVector.z *= 2;
 
-					object.lookAt( helixVector );
+        object.lookAt(helixVector);
 
-					targets.helix.push( object );
+        targets.helix.push(object);
 
-				}
+    }
 
-				// grid
+    // grid
 
-				function placeInGrid(i) {
-					var object = new THREE.Object3D();
-					object.position.x = ( ( i % 5 ) * 400 ) - 800;
-					object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
-					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
-					targets.grid.push( object );
-				}
+    function placeInGrid(i) {
+        var object = new THREE.Object3D();
+        object.position.x = ( ( i % 5 ) * 400 ) - 800;
+        object.position.y = ( -( Math.floor(i / 5) % 5 ) * 400 ) + 800;
+        object.position.z = ( Math.floor(i / 25) ) * 1000 - 2000;
+        targets.grid.push(object);
+    }
 
 
+    function makeElement(response, template) {
 
-				function makeSexy(response, template){
+        var element = document.createElement('div');
+        element.className = 'element';
+        element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+        element.innerHTML += X.render(template, response)
+        return element;
+    }
 
-					var element  = document.createElement( 'div' );
-					element.className = 'element';
-					element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
-					element.innerHTML += X.render(template,response)
-					placeRandomly(element);
 
-				}
+    var X = new SexyApp();
+//    var names = ['faraz.yashar', 'zach.michaelov', 'logon.aspx'];
 
+    // retrieve friends using an FB API call
+    FB.api('/me/friends?limit=50', function (response) {
+        var friends_list = response.data;
+        var n = friends_list.length;
+        for (var i = 0; i < n; i++) {
+            var friend = friends_list[i];
+            var element = makeElement(friend, 'fb_template');
+            placeRandomly(element);
 
+            placeInTable(i);
+            placeInSphere(i, n);
+            placeInHelix(i, n);
+            placeInGrid(i);
+        }
+        console.log("# of friends: " + friends_list.length);
+    });
 
+//    for (var i = 0, l = names.length; i < l; i++) {
+//        var name = names[i];
+//        $.getJSON('http://graph.facebook.com/' + name, function (res) {
+//            var element = makeElement(res, 'fb_template');
+//            placeRandomly(element);
+//        })
+//
+//        placeInTable(i)
+//        placeInSphere(i, l)
+//        placeInHelix(i, l)
+//        placeInGrid(i)
+//    };
 
-					var X = new SexyApp();
-					var names = ['faraz.yashar', 'zach.michaelov', 'logon.aspx'];
+    renderer = new THREE.CSS3DRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.domElement.style.position = 'absolute';
+    document.getElementById('container').appendChild(renderer.domElement);
 
-					for (var i = 0, l = names.length ; i < l; i++) {
-						var name = names[i];
-						$.getJSON('http://graph.facebook.com/'+name, function(res){
-							makeSexy(res, 'fb_template');
-						})
+    controls = new THREE.TrackballControls(camera, renderer.domElement);
+    controls.rotateSpeed = 0.5;
+    controls.addEventListener('change', render);
 
-						placeInTable(i)
-						placeInSphere(i,l)
-						placeInHelix(i,l)
-						placeInGrid(i,l)
-					};
+    var button = document.getElementById('table');
+    button.addEventListener('click', function (event) {
 
-				renderer = new THREE.CSS3DRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.domElement.style.position = 'absolute';
-				document.getElementById( 'container' ).appendChild( renderer.domElement );
+        transform(targets.table, 2000);
 
-				controls = new THREE.TrackballControls( camera, renderer.domElement );
-				controls.rotateSpeed = 0.5;
-				controls.addEventListener( 'change', render );
+    }, false);
 
-				var button = document.getElementById( 'table' );
-				button.addEventListener( 'click', function ( event ) {
+    var button = document.getElementById('sphere');
+    button.addEventListener('click', function (event) {
 
-					transform( targets.table, 2000 );
+        transform(targets.sphere, 2000);
 
-				}, false );
+    }, false);
 
-				var button = document.getElementById( 'sphere' );
-				button.addEventListener( 'click', function ( event ) {
+    var button = document.getElementById('helix');
+    button.addEventListener('click', function (event) {
 
-					transform( targets.sphere, 2000 );
+        transform(targets.helix, 2000);
 
-				}, false );
+    }, false);
 
-				var button = document.getElementById( 'helix' );
-				button.addEventListener( 'click', function ( event ) {
+    var button = document.getElementById('grid');
+    button.addEventListener('click', function (event) {
 
-					transform( targets.helix, 2000 );
+        transform(targets.grid, 2000);
 
-				}, false );
+    }, false);
 
-				var button = document.getElementById( 'grid' );
-				button.addEventListener( 'click', function ( event ) {
+    transform(targets.table, 5000);
 
-					transform( targets.grid, 2000 );
+    //
 
-				}, false );
+    window.addEventListener('resize', onWindowResize, false);
 
-				transform( targets.table, 5000 );
+}
 
-				//
+function transform(targets, duration) {
 
-				window.addEventListener( 'resize', onWindowResize, false );
+    TWEEN.removeAll();
 
-			}
+    for (var i = 0; i < objects.length; i++) {
 
-			function transform( targets, duration ) {
+        var object = objects[ i ];
+        var target = targets[ i ];
 
-				TWEEN.removeAll();
+        new TWEEN.Tween(object.position)
+            .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
 
-				for ( var i = 0; i < objects.length; i ++ ) {
+        new TWEEN.Tween(object.rotation)
+            .to({ x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration)
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
 
-					var object = objects[ i ];
-					var target = targets[ i ];
+    }
 
-					new TWEEN.Tween( object.position )
-						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
+    new TWEEN.Tween(this)
+        .to({}, duration * 2)
+        .onUpdate(render)
+        .start();
 
-					new TWEEN.Tween( object.rotation )
-						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
+}
 
-				}
+function onWindowResize() {
 
-				new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 
-			}
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-			function onWindowResize() {
+}
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+function animate() {
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+    requestAnimationFrame(animate);
 
-			}
+    TWEEN.update();
+    controls.update();
 
-			function animate() {
+}
 
-				requestAnimationFrame( animate );
-
-				TWEEN.update();
-				controls.update();
-
-			}
-
-			function render() {
-				renderer.render( scene, camera );
-			}
+function render() {
+    renderer.render(scene, camera);
+}
