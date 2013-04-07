@@ -172,6 +172,8 @@ function init() {
 
     var button = document.getElementById('back');
     button.addEventListener('click', function (event) {
+        if(!objects.parentObjects)
+            return;
         for(var i = 0; i < objects.length; i++){
             if(!objects[i] || !objects[i].subObjects)
                 continue;
