@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wuzzup?</title>
+    
+  </head>
+  <body>
+    <script type="text/javascript" src="vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="vendor/dropbox.min.js"></script>
+    <script type="text/javascript" src="vendor/handlebars.js"></script>
+    <script type="text/javascript" src="helpers.js"></script>
+    <script type="text/javascript" src="file.js"></script>
+    
+    
+    <script id="debug_template" type="text/x-handlebars-template">
+      <pre>
+      {{hasThumbnail}}
+      {{humanSize}}
+      {{isFile}}
+      {{isFolder}}
+      {{isRemoved}}
+      {{mimeType}}
+      {{name}}
+      {{path}}
+      </pre>
+    </script>
+
+    <script>
+    X = new SexyApp();
+    function displayItems(items){
+      items.forEach(function(i){
+        document.getElementById('app').innerHTML += X.render('debug_template', i)
+        });
+      };
+      readDir('/',displayItems)
+    </script>
+
+    <div id="app">
+    </div>
+  </body>
+</html>
