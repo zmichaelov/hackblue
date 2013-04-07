@@ -115,6 +115,8 @@ function init() {
             placeInGrid(i);
         }
         console.log("# of friends: " + friends_list.length);
+                transform(targets.table, 2000);
+
     });
 
 
@@ -157,8 +159,6 @@ function init() {
 
     transform(targets.table, 5000);
 
-    //
-
     window.addEventListener('resize', onWindowResize, false);
 
 }
@@ -192,21 +192,15 @@ function transform(targets, duration) {
 }
 
 function onWindowResize() {
-
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-
     renderer.setSize(window.innerWidth, window.innerHeight);
-
 }
 
 function animate() {
-
     requestAnimationFrame(animate);
-
     TWEEN.update();
     controls.update();
-
 }
 
 function render() {

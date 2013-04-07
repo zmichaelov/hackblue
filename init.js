@@ -22,11 +22,9 @@ function login() {
 window.fbAsyncInit = function () {
     console.log("begin fb sync")
     // init the FB JS SDK
-    var zachId = '294552144009726';
-    var farazId = '263323320470831';
 
     FB.init({
-        appId: farazId,                        // App ID from the app dashboard
+        appId: '294552144009726',                        // App ID from the app dashboard
         status: true,                                 // Check Facebook Login status
         cookie: true,           // enable cookies to allow the server to access the session
         xfbml: true                                  // Look for social plugins on the page
@@ -52,15 +50,3 @@ window.fbAsyncInit = function () {
         }
     });
 };
-
-//Load the SDK asynchronously
-//(function (d, s, id) {
-//    var js, fjs = d.getElementsByTagName(s)[0];
-//    if (d.getElementById(id)) {
-//        return;
-//    }
-//    js = d.createElement(s);
-//    js.id = id;
-//    js.src = "//connect.facebook.net/en_US/all.js";
-//    fjs.parentNode.insertBefore(js, fjs);
-//}(document, 'script', 'facebook-jssdk'));
