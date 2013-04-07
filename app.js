@@ -35,9 +35,9 @@ function init() {
 
     function placeInExplode(){
         var object = new THREE.Object3D();
-        object.position.x = -5000;
-        object.position.y = -5000;
-        object.position.z = -5000;
+        object.position.x = -50000;
+        object.position.y = -50000;
+        object.position.z = -50000;
 
         targets.explode[0] = object;
     }
