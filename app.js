@@ -60,13 +60,33 @@ function init() {
         targets.subGrid.push(object);
     }
 
-    function makeElement(response, template) {
-        var element = document.createElement('div');
-        element.className = 'element';
-        element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
-        element.innerHTML += X.render(template, response);
+//    function makeElement(response, template) {
+//        var element = document.createElement('div');
+//        element.className = 'element';
+//        element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+//        element.innerHTML += X.render(template, response);
+//        return element;
+//    }
+
+    function makeElement(response, template){
+        var element = document.createElement("div");
+        element.id = response.id;
+        settings = {
+            fontSize: 20
+        };
+        var html = X.render(template, response);
+        var cubeSet = new HexaFlip(element,
+            {
+                dropbox: [response.name, response.path, html]
+            }, settings
+        );
+        element.addEventListener('dblclick', function(){
+            cubeSet.flip();
+        }, false);
+
         return element;
     }
+
 
     function makeFolder(response, template, element) {
         if(!element)
