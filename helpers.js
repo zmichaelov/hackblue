@@ -15,7 +15,7 @@ function SexyApp() {
 	this.render = function(templateId, content){
 		var template = this.templates[templateId];
 		if (template === undefined) {
-    	template = this.registerTemplate(templateId)
+    	template = this.registerTemplate(templateId)	
     }
 		return this.templates[templateId](content);
 	}

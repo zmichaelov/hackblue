@@ -7,8 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-        <div id="fb-root"></div>
-        <script src="init.js"></script>
+    <div id="fb-root"></div>
 		<script src="vendor/three.js"></script>
 		<script src="vendor/three/libs/tween.min.js"></script>
 		<script src="vendor/three/controls/TrackballControls.js"></script>
@@ -16,15 +15,27 @@
 		<script src="vendor/handlebars.js"></script>
 		<script src="vendor/jquery.js"></script>
 		<script src="helpers.js"></script>
+    <script src="vendor/dropbox.min.js"></script>
+    <script src="file.js"></script>    
 
 		<div id="container"></div>
 
 		<div id="menu">
-			<button id="table">TABLE</button>
-			<button id="sphere">SPHERE</button>
-			<button id="helix">HELIX</button>
-			<button id="grid">GRID</button>
+			<button id="back">BACK</button>
 		</div>
+
+    <script id="debug_template" type="text/x-handlebars-template">
+      <div>
+      {{hasThumbnail}}
+      {{humanSize}}
+      {{isFile}}
+      {{isFolder}}
+      {{isRemoved}}
+      {{mimeType}}
+      <div class = "name">{{name}}</div>
+      {{path}}
+      </div>
+    </script>
 
 		<script id="fb_template" type="text/x-handlebars-template">
 			<a href="http://facebook.com/{{id}}">
@@ -33,10 +44,7 @@
 			</a>
 		</script>
 
-
-        <script src='app.js'></script>
-        <script src='fb.js'></script>
-
-        <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src='app.js'></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
 	</body>
 </html>

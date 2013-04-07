@@ -36,16 +36,14 @@ function renderContents(contents){
 
 }
 
+function readFile(path, callback){
+  client.stat(path,null, function(err,info){
+    callback(info)
+  })
+}
 
-function readDir(dir, callback){
-	return client.stat(dir,{ readDir: true}, function(err, stat, contents){
+function readDir(path, callback){
+	client.stat(path,{ readDir: true}, function(err, info, contents){
 		callback(contents)
 	});
 }
-
-
-
-function renderFile(){
-
-}
-
