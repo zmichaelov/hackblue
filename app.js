@@ -83,7 +83,7 @@ function init() {
         var html = X.render(template, response);
         var cubeSet = new HexaFlip(element,
             {
-                dropbox: [response.name, response.path, html]
+                dropbox: [response.name,  html, response.path]
             }, settings
         );
         if(response.isFolder === false){
@@ -194,7 +194,7 @@ function init() {
     document.getElementById('container').appendChild(renderer.domElement);
 
     controls = new THREE.TrackballControls(camera, renderer.domElement);
-    controls.rotateSpeed = 0.5;
+    controls.rotateSpeed = 0.1;
     controls.addEventListener('change', render);
 
     var button = document.getElementById('back');
@@ -284,3 +284,41 @@ function render() {
 
 init();
 animate();
+elll = document
+
+
+function keyboardMove(key){
+    switch (key)
+{
+// a
+case 65:
+  camera.position.x += 10;
+  break;
+case 68:
+  camera.position.x -= 10;
+  break;
+case 83:
+  camera.position.y += 10;
+  break;
+case 87:
+  camera.position.y -= 10;
+  break;
+case 69:
+  camera.position.z -= 10;
+  break;
+case 81:
+  camera.position.z += 10;
+  break;
+}
+}
+
+if (typeof elll.addEventListener != "undefined") {
+    elll.addEventListener("keydown", function(evt) {
+        keyboardMove(evt.keyCode)
+    }, false);
+} else if (typeof el.attachEvent != "undefined") {
+    elll.attachEvent("onkeydown", function(evt) {
+  keyboardMove(evt.keyCode)
+      });
+}
+
