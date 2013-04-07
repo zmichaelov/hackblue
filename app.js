@@ -4,9 +4,6 @@ var controls;
 var objects = [];
 var targets = { table: [], sphere: [], helix: [], grid: [] };
 
-init();
-animate();
-
 function init() {
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
@@ -102,10 +99,9 @@ function init() {
 
 
     var X = new SexyApp();
-//    var names = ['faraz.yashar', 'zach.michaelov', 'logon.aspx'];
 
     // retrieve friends using an FB API call
-    FB.api('/me/friends?limit=50', function (response) {
+    FB.api('/me/friends?limit=100', function (response) {
         var friends_list = response.data;
         var n = friends_list.length;
         for (var i = 0; i < n; i++) {
@@ -121,18 +117,6 @@ function init() {
         console.log("# of friends: " + friends_list.length);
     });
 
-//    for (var i = 0, l = names.length; i < l; i++) {
-//        var name = names[i];
-//        $.getJSON('http://graph.facebook.com/' + name, function (res) {
-//            var element = makeElement(res, 'fb_template');
-//            placeRandomly(element);
-//        })
-//
-//        placeInTable(i)
-//        placeInSphere(i, l)
-//        placeInHelix(i, l)
-//        placeInGrid(i)
-//    };
 
     renderer = new THREE.CSS3DRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);

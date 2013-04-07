@@ -31,6 +31,8 @@ window.fbAsyncInit = function () {
             // connected
             console.log("Connected!");
             GLOBALS.accessToken = response.authResponse.accessToken;
+            init();
+            animate();
         } else if (response.status === 'not_authorized') {
             // not_authorized
             console.log("Not authorized");
