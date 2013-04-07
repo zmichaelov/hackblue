@@ -3,11 +3,13 @@ var controls;
 
 var objects = [];
 var targets = { table: [], sphere: [], helix: [], grid: [] , subGrid: [],explode: []};
-
+var MAX_DEPTH = 4;
 function init() {
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.z = 1800;
+//    camera.position.x = 500;
+//    camera.position.y = 500;
 
     scene = new THREE.Scene();
     // file system
@@ -27,7 +29,7 @@ function init() {
         var object = new THREE.CSS3DObject(element);
         object.position.x = ( ( i % 5 ) * 400 ) - 800;
         object.position.y = ( -( Math.floor(i / 5)) * 400 ) + 800;
-        object.position.z = - (depth+1)*100;
+        object.position.z = - (depth+1)*200;
         scene.add(object);
 
         return object;
@@ -56,22 +58,47 @@ function init() {
         var object = new THREE.Object3D();
         object.position.x = ( ( i % 5 ) * 400 ) - 800;
         object.position.y = ( -( Math.floor(i / 5)) * 400 ) + 800;
-        object.position.z = - (depth+1)*100;
+        object.position.z = - (depth+1)*200;
         targets.subGrid.push(object);
     }
 
-    function makeElement(response, template) {
-        var element = document.createElement('div');
-        element.className = 'element';
-        element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
-        element.innerHTML += X.render(template, response);
+//    function makeElement(response, template) {
+//        var element = document.createElement('div');
+//        element.className = 'element';
+//        element.style.backgroundColor = 'rgba(6,154,213,.5)';// + ')';
+//        element.innerHTML += X.render(template, response);
+//        return element;
+//    }
+    function makeElement(response, template){
+        var element = document.createElement("div");
+        element.id = response.id;
+        if(response.isFolder){
+            element.className += " folder"
+        }
+        settings = {
+            fontSize: 30,
+            margin: 50
+
+        };
+        var html = X.render(template, response);
+        var cubeSet = new HexaFlip(element,
+            {
+                dropbox: [response.name, response.path, html]
+            }, settings
+        );
+        if(response.isFolder === false){
+            element.addEventListener('click', function(){
+                cubeSet.flip();
+            }, false);
+        }
         return element;
     }
 
     function makeFolder(response, template, element) {
         if(!element)
             var element = makeElement(response, template);
-        element.addEventListener('click', function (event){
+        element.addEventListener('dblclick', function (event){
+            console.log("Double Click");
             event.preventDefault();
             for(var i = 0; i < objects.length; i++){
                 if(!objects[i] || i === this.ind){
@@ -115,7 +142,7 @@ function init() {
             object.el = el;
 
             var m = subcontent.length;
-            for(var j = 0; j < m; j++){
+            for(var j = 0; j < m && j < MAX_DEPTH; j++){
                 var subel = subcontent[j];
                 var subelement = makeElement(subel, 'debug_template');
                 var subObject = placeSubFolderinFS(subelement, i, j);
@@ -191,7 +218,7 @@ function init() {
             targets.subGrid = [];
             if(!objects[i] || !objects[i].subObjects)
                 continue;
-            for(var j = 0; j < objects[i].subObjects.length; j++){
+            for(var j = 0; j < objects[i].subObjects.length && j < MAX_DEPTH; j++){
                 placeInSubGrid(i, j);
             }
             if(objects[i].subObjects.length !== 0){
