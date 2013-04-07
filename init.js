@@ -3,7 +3,9 @@
  */
 GLOBALS = {};
 function login() {
+    console.log("attempting login")
     FB.login(function (response) {
+        console.log("login response", response);
             if (response.authResponse) {
                 // connected
                 console.log("successfully logged in!");
@@ -18,15 +20,21 @@ function login() {
     );
 }
 window.fbAsyncInit = function () {
+    console.log("begin fb sync")
     // init the FB JS SDK
+    var zachId = '294552144009726';
+    var farazId = '263323320470831';
+
     FB.init({
-        appId: '294552144009726',                        // App ID from the app dashboard
+        appId: farazId,                        // App ID from the app dashboard
         status: true,                                 // Check Facebook Login status
+        cookie: true,           // enable cookies to allow the server to access the session
         xfbml: true                                  // Look for social plugins on the page
     });
 
     // Additional initialization code such as adding Event Listeners goes here
     var loginStatus = FB.getLoginStatus(function (response) {
+        console.log("Login status", response)
         if (response.status === 'connected') {
             // connected
             console.log("Connected!");
