@@ -35,9 +35,9 @@ function init() {
 
     function placeInExplode(){
         var object = new THREE.Object3D();
-        object.position.x = -100000;
-        object.position.y = -100000;
-        object.position.z = -100000;
+        object.position.x = -5000;
+        object.position.y = -5000;
+        object.position.z = -5000;
 
         targets.explode[0] = object;
     }
@@ -74,20 +74,14 @@ function init() {
         element.addEventListener('click', function (event){
             event.preventDefault();
             for(var i = 0; i < objects.length; i++){
-                if(!objects[i])
-                    continue;
-                if(i === element.ind){
-                    targets.subGrid = [];
-                    for(var j = 0; j < objects[i].subObjects.length; j++){
-                        placeInSubGrid(i, j);
-                    }
+                if(!objects[i] || i === this.ind){
                     continue;
                 }
                 if(objects[i].subObjects)
                     transform(objects[i].subObjects, targets.explode, 1000);
             }
             transform(objects, targets.explode, 1000);
-            objects = objects[element.ind].subObjects;
+            objects = objects[this.ind].subObjects;
             transform(objects, targets.grid, 1000);
 
             for(var i = 0; i < objects.length; i++){
@@ -129,7 +123,7 @@ function init() {
                 subObject.el = subel;
                 subObject.element = subelement;
                 // subObject.parentObjects = objects;
-                object.subObjects[j] = subObject;
+                object.subObjects.push(subObject);
                 object.subObjects.parentObjects = objects;
             }
         });
@@ -181,11 +175,15 @@ function init() {
         for(var i = 0; i < objects.length; i++){
             if(!objects[i] || !objects[i].subObjects)
                 continue;
+            targets.subGrid = [];
+            for(var j = 0; j < objects[i].subObjects.length; j++){
+                placeInSubGrid(i, j);
+            }
             transform(objects[i].subObjects, targets.explode, 1000);
         }
-        transform(objects, targets.subGrid, 1000);
+        // transform(objects, targets.subGrid, 1000);
+
         objects = objects.parentObjects;
-        transform(objects, targets.grid, 1000);
         transform(objects, targets.grid, 1000);
         for(var i = 0; i < objects.length; i++){
             targets.subGrid = [];
