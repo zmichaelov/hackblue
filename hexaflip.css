@@ -115,11 +115,11 @@
 }
 
 .folder .hexaflip-cube > div:nth-child(1n+1) {
-    background-color: red;
+    background-color: #30b71d;
 }
 
 .folder .hexaflip-cube > div:nth-child(2n+2) {
-    background-color: #30b71d;
+    background-color: #eee;
 }
 
 .folder .hexaflip-cube > div:nth-child(3n+3) {
